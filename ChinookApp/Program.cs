@@ -12,8 +12,9 @@ namespace ChinookApp
             ICustomerRepository repository = new CustomerRepository();
             // ReadAllCustomers(repository);
             // ReadCustomerById(repository);
-            ReadCostumerByName(repository);
-
+            // ReadCostumerByName(repository);
+            // GetCustomerCountries(repository);
+            GetPageOfCustomers(repository);
         }
 
         static void ReadAllCustomers(ICustomerRepository repository)
@@ -29,6 +30,11 @@ namespace ChinookApp
         static void ReadCostumerByName(ICustomerRepository repository)
         {
             PrintCustomer(repository.GetCustomer("Barne"));
+        }
+
+        static void GetPageOfCustomers(ICustomerRepository repository)
+        {
+            PrintCustomers(repository.GetPageOfCustomers(5, 10));
         }
 
         static void InsertNewCustomer(ICustomerRepository repository)
@@ -59,6 +65,11 @@ namespace ChinookApp
             }
         }
 
+        static void GetCustomerCountries(ICustomerRepository repository)
+        {
+            PrintCustomersCountry(repository.GetCustomerCountries());
+        }
+
         static void PrintCustomers(IEnumerable<Customer> customers)
         {
             foreach( var customer in customers)
@@ -71,5 +82,14 @@ namespace ChinookApp
         {
             Console.WriteLine($"{customer.CustomerId} {customer.FirstName} {customer.LastName} {customer.Country} {customer.PostalCode} {customer.Phone} {customer.Email}");
         }
+
+        static void PrintCustomersCountry(IEnumerable<CustomerCountry> countryCustomers)
+        {
+            foreach (var customer in countryCustomers)
+            {
+                Console.WriteLine($"{customer.Country} {customer.Count}");
+            }
+        }
+
     }
 }
