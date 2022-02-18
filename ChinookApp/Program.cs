@@ -14,7 +14,8 @@ namespace ChinookApp
             // ReadCustomerById(repository);
             // ReadCostumerByName(repository);
             // GetCustomerCountries(repository);
-            GetPageOfCustomers(repository);
+            // GetPageOfCustomers(repository);
+            GetTopSpenders(repository);
         }
 
         static void ReadAllCustomers(ICustomerRepository repository)
@@ -70,6 +71,11 @@ namespace ChinookApp
             PrintCustomersCountry(repository.GetCustomerCountries());
         }
 
+        static void GetTopSpenders(ICustomerRepository repository)
+        {
+            PrintTopSpenders(repository.TopSpenders());
+        }
+
         static void PrintCustomers(IEnumerable<Customer> customers)
         {
             foreach( var customer in customers)
@@ -91,5 +97,12 @@ namespace ChinookApp
             }
         }
 
+        static void PrintTopSpenders(IEnumerable<CustomerSpender> topSpenders)
+        {
+            foreach (var spender in topSpenders)
+            {
+                Console.WriteLine($"{spender.CustomerId} {spender.LastName} {spender.Total}");
+            }
+        }
     }
 }

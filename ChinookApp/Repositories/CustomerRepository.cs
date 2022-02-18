@@ -290,13 +290,41 @@ namespace ChinookApp.Repositories
         // 8.
         public List<CustomerSpender> TopSpenders()
         {
-            /*
-             SELECT CUSTOMER.CustomerId, CUSTOMER.LastName, INVOICE.Total FROM INVOICE
-	            INNER JOIN CUSTOMER ON INVOICE.CustomerId = CUSTOMER.CustomerId
-	            ORDER BY INVOICE.Total DESC
-            */
+            List<CustomerSpender> spenders = new List<CustomerSpender>();
+            string sql = "SELECT CUSTOMER.CustomerId, CUSTOMER.LastName, INVOICE.Total FROM INVOICE" +
+                         "   INNER JOIN CUSTOMER ON INVOICE.CustomerId = CUSTOMER.CustomerId" +
+                         "   ORDER BY INVOICE.Total DESC";
 
-            return new List<CustomerSpender>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                CustomerSpender customerSpender = new CustomerSpender();
+                                customerSpender.CustomerId = reader.GetInt32(0);
+                                customerSpender.LastName = reader.GetString(1);
+                                customerSpender.Total = reader.GetDecimal(2);
+
+                                spenders.Add(customerSpender);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
+            return spenders;
         }
 
         // 9.
