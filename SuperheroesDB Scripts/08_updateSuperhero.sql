@@ -12,3 +12,4 @@
 USE [SuperheroesDb];
 GO
 
+UPDATE [dbo].[Superhero] SET Name='ThorX' WHERE Name='Thor';

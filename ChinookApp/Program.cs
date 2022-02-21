@@ -80,10 +80,34 @@ namespace ChinookApp
 
         static void GetMostCustomerGenre(ICustomerRepository repository)
         {
-            for (int i = 1; i < 60; i++)
+            string choice = "";
+            int choiceId = 0;
+            bool validChoice = false;
+            
+            Console.WriteLine("--- Get customer most popular genre ---");
+
+            // Start
+            do
             {
-                PrintCustomerGenre(repository.TopPopularGenre(i));
-            }
+                // Prompt for a choice
+                Console.WriteLine("Please choice a customer by id between 1 and 59");
+                choice = Console.ReadLine();
+
+                if (!string.IsNullOrEmpty(choice) && Int32.TryParse(choice, out choiceId))
+                {
+                    if (choiceId >= 1 && choiceId < 60)
+                    {
+                        validChoice = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Plase make sure you enter a valid id between 1 and 59");
+                    }
+                }
+            } while (validChoice == false);
+
+            PrintCustomerGenre(repository.TopPopularGenre(choiceId));
+
         }
 
         static void PrintCustomers(IEnumerable<Customer> customers)
