@@ -15,7 +15,9 @@ namespace ChinookApp
             // ReadCostumerByName(repository);
             // GetCustomerCountries(repository);
             // GetPageOfCustomers(repository);
-            GetTopSpenders(repository);
+            // GetTopSpenders(repository);
+            GetMostCustomerGenre(repository);
+
         }
 
         static void ReadAllCustomers(ICustomerRepository repository)
@@ -76,6 +78,14 @@ namespace ChinookApp
             PrintTopSpenders(repository.TopSpenders());
         }
 
+        static void GetMostCustomerGenre(ICustomerRepository repository)
+        {
+            for (int i = 1; i < 60; i++)
+            {
+                PrintCustomerGenre(repository.TopPopularGenre(i));
+            }
+        }
+
         static void PrintCustomers(IEnumerable<Customer> customers)
         {
             foreach( var customer in customers)
@@ -103,6 +113,11 @@ namespace ChinookApp
             {
                 Console.WriteLine($"{spender.CustomerId} {spender.LastName} {spender.Total}");
             }
+        }
+
+        static void PrintCustomerGenre(CustomerGenre customerGenre)
+        {
+            Console.WriteLine($"{customerGenre.CustomerId} {customerGenre.LastName} {customerGenre.LastName} --> {customerGenre.GenreName}");
         }
     }
 }

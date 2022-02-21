@@ -92,7 +92,7 @@ namespace ChinookApp.Repositories
         }
 
         // 3.
-        public Customer GetCustomer(string name)
+        public Customer GetCustomer(string lastname)
         {
             Customer customer = new Customer();
             string sql = "SELECT CustomerId,FirstName,LastName,Country,PostalCode,Phone,Email FROM Customer Where LastName like @LastName";
@@ -104,7 +104,7 @@ namespace ChinookApp.Repositories
 
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
-                        cmd.Parameters.AddWithValue("@LastName", $"%{name}%");
+                        cmd.Parameters.AddWithValue("@LastName", $"%{lastname}%");
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -251,8 +251,8 @@ namespace ChinookApp.Repositories
 
             return success;
         }
-
-        // 7.
+                                                        
+        // 7.                                                       
         public List<CustomerCountry> GetCustomerCountries()
         {
             List<CustomerCountry> countryCustomers = new List<CustomerCountry>();
@@ -285,9 +285,9 @@ namespace ChinookApp.Repositories
             }
 
             return countryCustomers;
-        }
-
-        // 8.
+        }                                                       
+                                                        
+        // 8.                                                       
         public List<CustomerSpender> TopSpenders()
         {
             List<CustomerSpender> spenders = new List<CustomerSpender>();
@@ -325,12 +325,56 @@ namespace ChinookApp.Repositories
 
 
             return spenders;
-        }
-
-        // 9.
-        public List<CustomerGenre> TopPopularGenre()
+        }                                                       
+                                                        
+        // 9.                                                       
+        public CustomerGenre TopPopularGenre(int customerId)                                                     
         {
-            return new List<CustomerGenre>();
+            CustomerGenre customerGenre = new CustomerGenre();
+
+            string sql = "WITH                                                          " +
+            "    Invoice_CTE (InvoiceId, CustomerId, Total) AS (                        " +
+            "        SELECT TOP 1 InvoiceId, CustomerId, Total  FROM Invoice            " +
+            "        WHERE CustomerId=@CustomerId                                       " +
+            "        ORDER BY Total DESC                                                " +
+            "    )                                                                      " +
+            "select TOP 1 Customer.CustomerId, Customer.FirstName,                      " +
+            "        Customer.LastName, Genre.Name from InvoiceLine                     " +
+            "inner join Invoice_CTE ON Invoice_CTE.InvoiceId=InvoiceLine.InvoiceId      " +
+            "inner join Customer ON Customer.CustomerId=Invoice_CTE.CustomerId          " +
+            "inner join Track ON Track.TrackId=InvoiceLine.TrackId                      " +
+            "inner join Genre ON Genre.GenreId=Track.GenreId                            " +
+            "ORDER BY Track.Bytes DESC                                                  ";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@CustomerId", customerId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                customerGenre.CustomerId = reader.GetInt32(0);
+                                customerGenre.FirstName = reader.GetString(1);
+                                customerGenre.LastName = reader.GetString(2);
+                                customerGenre.GenreName = reader.GetString(3);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return customerGenre;
         }
 
     }

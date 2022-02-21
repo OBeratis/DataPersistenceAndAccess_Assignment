@@ -17,6 +17,6 @@ namespace ChinookApp.Repositories
         public bool UpdateCustomer(Customer customer);
         public List<CustomerCountry> GetCustomerCountries();
         public List<CustomerSpender> TopSpenders();
-        public List<CustomerGenre> TopPopularGenre();
+        public CustomerGenre TopPopularGenre(int id);
     }
 }
