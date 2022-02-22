@@ -12,11 +12,12 @@ namespace ChinookApp
 {
     public  class ChinookUI
     {
+        // ICustomerRepository _dataStorage = new CustomerRepository();
         SqlClientCustomerHelper _dataStorage = new SqlClientCustomerHelper();
 
-        public ChinookUI(SqlClientCustomerHelper sqlClientCustomerHelper)
+        public ChinookUI(SqlClientCustomerHelper customerRepository)
         {
-            _dataStorage = sqlClientCustomerHelper;   
+            _dataStorage = customerRepository;   
         }
 
         public void Start()
@@ -99,27 +100,27 @@ Select an option.. [0-9]?";
             while (exitChoice == false);
         }
 
-        private void ReadAllCustomers(SqlClientCustomerHelper repository)
+        private void ReadAllCustomers(ICustomerRepository repository)
         {
             PrintCustomers(repository.GetAllCustomers());
         }
 
-        private void ReadCustomerById(SqlClientCustomerHelper repository)
+        private void ReadCustomerById(ICustomerRepository repository)
         {
             PrintCustomer(repository.GetCustomer(7));
         }
 
-        private void ReadCostumerByName(SqlClientCustomerHelper repository)
+        private void ReadCostumerByName(ICustomerRepository repository)
         {
             PrintCustomer(repository.GetCustomer("Barne"));
         }
 
-        private void GetPageOfCustomers(SqlClientCustomerHelper repository)
+        private void GetPageOfCustomers(ICustomerRepository repository)
         {
             PrintCustomers(repository.GetPageOfCustomers(5, 10));
         }
 
-        private void InsertNewCustomer(SqlClientCustomerHelper repository)
+        private void InsertNewCustomer(ICustomerRepository repository)
         {
             Customer customer = new Customer();
 
@@ -133,7 +134,7 @@ Select an option.. [0-9]?";
             }
         }
 
-        private void UpdateExistingCustomer(SqlClientCustomerHelper repository)
+        private void UpdateExistingCustomer(ICustomerRepository repository)
         {
             Customer customer = new Customer();
 
@@ -147,17 +148,17 @@ Select an option.. [0-9]?";
             }
         }
 
-        private void GetCustomerCountries(SqlClientCustomerHelper repository)
+        private void GetCustomerCountries(ICustomerRepository repository)
         {
             PrintCustomersCountry(repository.GetCustomerCountries());
         }
 
-        private void GetTopSpenders(SqlClientCustomerHelper repository)
+        private void GetTopSpenders(ICustomerRepository repository)
         {
             PrintTopSpenders(repository.TopSpenders());
         }
 
-        private void GetMostCustomerGenre(SqlClientCustomerHelper repository)
+        private void GetMostCustomerGenre(ICustomerRepository repository)
         {
             string choice = "";
             int choiceId = 0;

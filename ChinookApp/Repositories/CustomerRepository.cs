@@ -9,8 +9,9 @@ using ChinookApp.Models;
 
 namespace ChinookApp.Repositories
 {
-    public class CustomerRepository : ICustomerRepository
+    public class CustomerRepository 
     {
+        /*
         // Customer requirements
 
         // 1.
@@ -380,6 +381,6 @@ namespace ChinookApp.Repositories
 
             return customerGenre;
         }
-
+        */
     }
 }
