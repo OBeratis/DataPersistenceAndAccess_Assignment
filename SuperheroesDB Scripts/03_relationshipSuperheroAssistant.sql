@@ -18,5 +18,3 @@ ALTER TABLE [dbo].[Superhero] ADD CONSTRAINT [FK_AssistantId]
 GO
 CREATE INDEX [IFK_AssistantId] ON [dbo].[Superhero] ([AssistantId]);
 GO
-
-

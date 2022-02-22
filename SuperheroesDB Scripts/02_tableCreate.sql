@@ -19,8 +19,8 @@ GO
 CREATE TABLE [dbo].[Superhero]
 (
     [SuperheroId] INT NOT NULL IDENTITY,
-	[AssistantId] INT NOT NULL,
-	[PowerId] INT NOT NULL,
+	[AssistantId] INT NULL,
+	[PowerId] INT NULL,
     [Name] NVARCHAR(50),
     [Alias] NVARCHAR(20),
 	[Origin] NVARCHAR (30)

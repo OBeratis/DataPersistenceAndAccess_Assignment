@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChinookApp.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +8,9 @@ using Microsoft.Data.SqlClient;
 
 using ChinookApp.Models;
 
-namespace ChinookApp.Repositories
+namespace ChinookApp.Helpers
 {
-    public class CustomerRepository : ICustomerRepository
+    public class SqlClientCustomerHelper : ICustomerRepository
     {
         // Customer requirements
 
@@ -255,7 +256,7 @@ namespace ChinookApp.Repositories
 
             return success;
         }
-                                                        
+
         // 7.                                                       
         public List<CustomerCountry> GetCustomerCountries()
         {
@@ -289,8 +290,8 @@ namespace ChinookApp.Repositories
             }
 
             return countryCustomers;
-        }                                                       
-                                                        
+        }
+
         // 8.                                                       
         public List<CustomerSpender> TopSpenders()
         {
@@ -329,10 +330,10 @@ namespace ChinookApp.Repositories
 
 
             return spenders;
-        }                                                       
-                                                        
+        }
+
         // 9.                                                       
-        public CustomerGenre TopPopularGenre(int customerId)                                                     
+        public CustomerGenre TopPopularGenre(int customerId)
         {
             CustomerGenre customerGenre = new CustomerGenre();
 
