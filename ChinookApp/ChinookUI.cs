@@ -15,11 +15,19 @@ namespace ChinookApp
         // ICustomerRepository _dataStorage = new CustomerRepository();
         SqlClientCustomerHelper _dataStorage = new SqlClientCustomerHelper();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="customerRepository"></param>
         public ChinookUI(SqlClientCustomerHelper customerRepository)
         {
             _dataStorage = customerRepository;   
         }
 
+        /// <summary>
+        /// Start the ChinookApp with a simple console menu
+        /// Exit with 0
+        /// </summary>
         public void Start()
         {
             string downloadMenu = @"
@@ -100,26 +108,47 @@ Select an option.. [0-9]?";
             while (exitChoice == false);
         }
 
+
+        /// <summary>
+        /// Read and display all customers on console
+        /// </summary>
+        /// <param name="repository">Interact with chinook database</param>
         private void ReadAllCustomers(ICustomerRepository repository)
         {
             PrintCustomers(repository.GetAllCustomers());
         }
 
+        /// <summary>
+        /// Read and display customer find Id
+        /// </summary>
+        /// <param name="repository">Interact with chinook database</param>
         private void ReadCustomerById(ICustomerRepository repository)
         {
             PrintCustomer(repository.GetCustomer(7));
         }
 
+        /// <summary>
+        /// Read and display customer find by partial name 
+        /// </summary>
+        /// <param name="repository">Interact with chinook database</param>
         private void ReadCostumerByName(ICustomerRepository repository)
         {
             PrintCustomer(repository.GetCustomer("Barne"));
         }
 
+        /// <summary>
+        /// Get page of 10 customers and display on console
+        /// </summary>
+        /// <param name="repository">Interact with chinook database</param>
         private void GetPageOfCustomers(ICustomerRepository repository)
         {
             PrintCustomers(repository.GetPageOfCustomers(5, 10));
         }
 
+        /// <summary>
+        ///  Insert a new customer into chinook database and return success message.
+        /// </summary>
+        /// <param name="repository">Interact with chinook database</param>
         private void InsertNewCustomer(ICustomerRepository repository)
         {
             Customer customer = new Customer();
@@ -146,6 +175,10 @@ Select an option.. [0-9]?";
             }
         }
 
+        /// <summary>
+        /// Update a existing customer and return success message
+        /// </summary>
+        /// <param name="repository">Interact with chinook database</param>
         private void UpdateExistingCustomer(ICustomerRepository repository)
         {
             Customer customer = new Customer();
@@ -162,16 +195,28 @@ Select an option.. [0-9]?";
             }
         }
 
+        /// <summary>
+        /// Get and display the count of all customers on each country
+        /// </summary>
+        /// <param name="repository">Interact with chinook database</param>
         private void GetCustomerCountries(ICustomerRepository repository)
         {
             PrintCustomersCountry(repository.GetCustomerCountries());
         }
 
+        /// <summary>
+        /// Get and display the highest spenders 
+        /// </summary>
+        /// <param name="repository">Interact with chinook database</param>
         private void GetTopSpenders(ICustomerRepository repository)
         {
             PrintTopSpenders(repository.TopSpenders());
         }
 
+        /// <summary>
+        /// Get and display customer genre, choose which customer do you want to display 
+        /// </summary>
+        /// <param name="repository">Interact with chinook database</param>
         private void GetMostCustomerGenre(ICustomerRepository repository)
         {
             string choice = "";
@@ -204,6 +249,7 @@ Select an option.. [0-9]?";
 
         }
 
+        #region Display Helpers
         private void PrintCustomers(IEnumerable<Customer> customers)
         {
             foreach (var customer in customers)
@@ -237,6 +283,7 @@ Select an option.. [0-9]?";
         {
             Console.WriteLine($"{customerGenre.CustomerId} {customerGenre.LastName} {customerGenre.LastName} --> {customerGenre.GenreName}");
         }
+        #endregion
 
     }
 

@@ -28,6 +28,8 @@ Start Visual Studio 2012 or higher
 
 Run console application ChinookApp
 
+A simple console menu will guide you onto ChinookApp.
+
 ## Maintainers
 
 <https://github.com/OBeratis>
