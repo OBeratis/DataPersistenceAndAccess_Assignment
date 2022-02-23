@@ -224,7 +224,7 @@ namespace ChinookApp.Helpers
         public bool AddNewCustomer(Customer customer)
         {
             bool success = false;
-            string sql = "NSERT INTO Customer(FirstName,LastName,Company,Address,City,State,Country,PostalCode,Phone,Fax,Email,SupportRepId) " +
+            string sql = "INSERT INTO Customer (FirstName,LastName,Company,Address,City,State,Country,PostalCode,Phone,Fax,Email,SupportRepId) " +
                             "VALUES(@FirstName,@LastName,@Company,@Address,@City,@State,@Country,@PostalCode,@Phone,@Fax,@Email,@SupportRepId)";
             try
             {
@@ -273,10 +273,14 @@ namespace ChinookApp.Helpers
         public bool UpdateCustomer(Customer customer)
         {
             bool success = false;
+            /*
             string sql = "UPDATE Customer " +
                          "SET FirstName=@FirstName,LastName=@LastName,Company=@Company,Address=@Address,City=@City,State=@State" +
                          ",Country=@Country,PostalCode=@PostalCode,Phone=@Phone,Fax=@Fax,Email=@Email,SupportRepId=@SupportRepId " +
                          "WHERE CustomerId = @CustomerId";
+            */
+            string sql = "UPDATE Customer SET Fax=@Fax WHERE CustomerId = @CustomerId";
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
@@ -286,18 +290,18 @@ namespace ChinookApp.Helpers
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@CustomerId", customer.CustomerId);
-                        cmd.Parameters.AddWithValue("@FirstName", customer.FirstName);
-                        cmd.Parameters.AddWithValue("@LastName", customer.LastName);
-                        cmd.Parameters.AddWithValue("@Company", customer.Company);
-                        cmd.Parameters.AddWithValue("@Address", customer.Address);
-                        cmd.Parameters.AddWithValue("@City", customer.City);
-                        cmd.Parameters.AddWithValue("@State", customer.State);
-                        cmd.Parameters.AddWithValue("@Country", customer.Country);
-                        cmd.Parameters.AddWithValue("@PostalCode", customer.PostalCode);
-                        cmd.Parameters.AddWithValue("@Phone", customer.Phone);
+                        // cmd.Parameters.AddWithValue("@FirstName", customer.FirstName);
+                        // cmd.Parameters.AddWithValue("@LastName", customer.LastName);
+                        // cmd.Parameters.AddWithValue("@Company", customer.Company);
+                        // cmd.Parameters.AddWithValue("@Address", customer.Address);
+                        //cmd.Parameters.AddWithValue("@City", customer.City);
+                        //cmd.Parameters.AddWithValue("@State", customer.State);
+                        //cmd.Parameters.AddWithValue("@Country", customer.Country);
+                        //cmd.Parameters.AddWithValue("@PostalCode", customer.PostalCode);
+                        //cmd.Parameters.AddWithValue("@Phone", customer.Phone);
                         cmd.Parameters.AddWithValue("@Fax", customer.Fax);
-                        cmd.Parameters.AddWithValue("@Email", customer.Email);
-                        cmd.Parameters.AddWithValue("@SupportRepId", customer.SupportRepId);
+                        //cmd.Parameters.AddWithValue("@Email", customer.Email);
+                        //cmd.Parameters.AddWithValue("@SupportRepId", customer.SupportRepId);
 
                         success = cmd.ExecuteNonQuery() > 0 ? true : false;
                     }

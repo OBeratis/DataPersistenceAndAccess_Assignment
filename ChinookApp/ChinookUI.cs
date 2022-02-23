@@ -34,7 +34,7 @@ namespace ChinookApp
 	3) Read customer by Name (Note: Also search by partial Name possible, e.g. Customername='Barne')
 	4) Get page of customer (e.g. Start offset 5 and take 10 customers)
 	5) Add a new customer
-	6) Update an existing customer
+	6) Update an existing customer (e.g. Customer ID=20, change Fax for costumer)
 	7) Get number of customers in each country
 	8) Get top spenders
 	9) Get customer genre (e.g. enter customer id=1-59)
@@ -123,6 +123,18 @@ Select an option.. [0-9]?";
         private void InsertNewCustomer(ICustomerRepository repository)
         {
             Customer customer = new Customer();
+            customer.FirstName = "Hazel";
+            customer.LastName = "Zhang";
+            customer.Company = "OneLogin";
+            customer.Address = "Main Rd";
+            customer.City = "Greenville";
+            customer.State = "SC";
+            customer.Country = "USA";
+            customer.PostalCode = "12345";
+            customer.Phone = "";
+            customer.Fax = "";
+            customer.Email = "hazel.zhang@onelogin.com";
+            customer.SupportRepId = 6;
 
             if (repository.AddNewCustomer(customer))
             {
@@ -137,6 +149,8 @@ Select an option.. [0-9]?";
         private void UpdateExistingCustomer(ICustomerRepository repository)
         {
             Customer customer = new Customer();
+            customer.CustomerId = 20;
+            customer.Fax = "+1 (650) 644-3359";
 
             if (repository.UpdateCustomer(customer))
             {
