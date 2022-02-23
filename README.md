@@ -2,10 +2,13 @@
 
 ## Getting Started
 
--	ChinookApp is a console application in C# for education purposes
+-	ChinookApp is a console application in C# for education purposes.
 
 -	In Folder 'SuperheroesDB Scripts' are all SQL scripts provided to create the Database 'SuperheroesDb'
 	and its tables. Also included are some test data.
+
+-	Also included on folder 'SuperheroesDB Scripts' you will find the generated class diagram 
+	SuperheroesDb_Diagram.pdf for the 'SuperheroesDb' database.
 
 ## Prerequisites
 
