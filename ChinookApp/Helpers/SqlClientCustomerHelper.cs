@@ -14,11 +14,12 @@ namespace ChinookApp.Helpers
     {
         // Customer requirements
 
-        // 1.
         /// <summary>
-        /// 
+        /// 1. Read all Customers from database
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of each customer details</returns>
+        /// <exception cref="SqlException">In case of could not stablish a connection to sql server or other interaction with the database</exception>
+        /// <exception cref="Exception">All other errors on this method display error message on console</exception>
         public List<Customer> GetAllCustomers()
         {
             List<Customer> customers = new List<Customer>();
@@ -50,7 +51,11 @@ namespace ChinookApp.Helpers
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException exsql)
+            {
+                Console.WriteLine(exsql.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -58,7 +63,13 @@ namespace ChinookApp.Helpers
             return customers;
         }
 
-        // 2.
+        /// <summary>
+        /// 2. Read a specific customer from database
+        /// </summary>
+        /// <param name="id">Customers unique id</param>
+        /// <returns>Customer details as a class object</returns>
+        /// <exception cref="SqlException">In case of could not stablish a connection to sql server or other interaction with the database</exception>
+        /// <exception cref="Exception">All other errors on this method display error message on console</exception>
         public Customer GetCustomer(int id)
         {
             Customer customer = new Customer();
@@ -88,7 +99,11 @@ namespace ChinookApp.Helpers
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException exsql)
+            {
+                Console.WriteLine(exsql.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -96,11 +111,17 @@ namespace ChinookApp.Helpers
             return customer;
         }
 
-        // 3.
+        /// <summary>
+        /// 3. Read a specific customer from database
+        /// </summary>
+        /// <param name="lastname">Customers last name or first partial of a customers name</param>
+        /// <returns>Customer details as a class object</returns>
+        /// <exception cref="SqlException">In case of could not stablish a connection to sql server or other interaction with the database</exception>
+        /// <exception cref="Exception">All other errors on this method display error message on console</exception>
         public Customer GetCustomer(string lastname)
         {
             Customer customer = new Customer();
-            string sql = "SELECT CustomerId,FirstName,LastName,Country,PostalCode,Phone,Email FROM Customer Where LastName like @LastName";
+            string sql = "SELECT TOP 1 CustomerId,FirstName,LastName,Country,PostalCode,Phone,Email FROM Customer Where LastName like @LastName";
             try
             {
                 using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
@@ -127,7 +148,11 @@ namespace ChinookApp.Helpers
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException exsql)
+            {
+                Console.WriteLine(exsql.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -135,7 +160,14 @@ namespace ChinookApp.Helpers
             return customer;
         }
 
-        // 4.
+        /// <summary>
+        /// 4. Get a page of customers from the database
+        /// </summary>
+        /// <param name="offset">Beginning of the subset from the customer list</param>
+        /// <param name="limit">Limit the customer list to this count</param>
+        /// <returns>List of customer details</returns>
+        /// <exception cref="SqlException">In case of could not stablish a connection to sql server or other interaction with the database</exception>
+        /// <exception cref="Exception">All other errors on this method display error message on console</exception>
         public List<Customer> GetPageOfCustomers(int offset, int limit)
         {
             List<Customer> customers = new List<Customer>();
@@ -170,7 +202,11 @@ namespace ChinookApp.Helpers
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException exsql)
+            {
+                Console.WriteLine(exsql.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -178,7 +214,13 @@ namespace ChinookApp.Helpers
             return customers.Skip(offset).Take(limit).ToList();
         }
 
-        // 5.
+        /// <summary>
+        /// 5. Add a new customer to the database
+        /// </summary>
+        /// <param name="customer">Customer object with all details</param>
+        /// <returns>True if customer was inserted successfully</returns>
+        /// <exception cref="SqlException">In case of could not stablish a connection to sql server or other interaction with the database</exception>
+        /// <exception cref="Exception">All other errors on this method display error message on console</exception>
         public bool AddNewCustomer(Customer customer)
         {
             bool success = false;
@@ -209,7 +251,11 @@ namespace ChinookApp.Helpers
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException exsql)
+            {
+                Console.WriteLine(exsql.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -217,13 +263,20 @@ namespace ChinookApp.Helpers
             return success;
         }
 
-        // 6.
+        /// <summary>
+        /// 6. Update an existing customer 
+        /// </summary>
+        /// <param name="customer">Customer object with all customer details</param>
+        /// <returns>True if updating was successfully</returns>
+        /// <exception cref="SqlException">In case of could not stablish a connection to sql server or other interaction with the database</exception>
+        /// <exception cref="Exception">All other errors on this method display error message on console</exception>
         public bool UpdateCustomer(Customer customer)
         {
             bool success = false;
             string sql = "UPDATE Customer " +
                          "SET FirstName=@FirstName,LastName=@LastName,Company=@Company,Address=@Address,City=@City,State=@State" +
-                         ",Country=@Country,PostalCode=@PostalCode,Phone=@Phone,Fax=@Fax,Email=@Email,SupportRepId=@SupportRepId";
+                         ",Country=@Country,PostalCode=@PostalCode,Phone=@Phone,Fax=@Fax,Email=@Email,SupportRepId=@SupportRepId " +
+                         "WHERE CustomerId = @CustomerId";
             try
             {
                 using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
@@ -232,6 +285,7 @@ namespace ChinookApp.Helpers
 
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
+                        cmd.Parameters.AddWithValue("@CustomerId", customer.CustomerId);
                         cmd.Parameters.AddWithValue("@FirstName", customer.FirstName);
                         cmd.Parameters.AddWithValue("@LastName", customer.LastName);
                         cmd.Parameters.AddWithValue("@Company", customer.Company);
@@ -249,7 +303,11 @@ namespace ChinookApp.Helpers
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException exsql)
+            {
+                Console.WriteLine(exsql.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -257,7 +315,12 @@ namespace ChinookApp.Helpers
             return success;
         }
 
-        // 7.                                                       
+        /// <summary>
+        /// 7. Get a list of customers on each country
+        /// </summary>
+        /// <returns>List of countries with country name and count of customers</returns>
+        /// <exception cref="SqlException">In case of could not stablish a connection to sql server or other interaction with the database</exception>
+        /// <exception cref="Exception">All other errors on this method display error message on console</exception>
         public List<CustomerCountry> GetCustomerCountries()
         {
             List<CustomerCountry> countryCustomers = new List<CustomerCountry>();
@@ -284,7 +347,11 @@ namespace ChinookApp.Helpers
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException exsql)
+            {
+                Console.WriteLine(exsql.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -292,7 +359,12 @@ namespace ChinookApp.Helpers
             return countryCustomers;
         }
 
-        // 8.                                                       
+        /// <summary>
+        /// 8. Return a list of all customers who are the highest spenders
+        /// </summary>
+        /// <returns>List of customers id, Lastname and total invoices</returns>
+        /// <exception cref="SqlException">In case of could not stablish a connection to sql server or other interaction with the database</exception>
+        /// <exception cref="Exception">All other errors on this method display error message on console</exception>
         public List<CustomerSpender> TopSpenders()
         {
             List<CustomerSpender> spenders = new List<CustomerSpender>();
@@ -323,7 +395,11 @@ namespace ChinookApp.Helpers
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException exsql)
+            {
+                Console.WriteLine(exsql.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -332,7 +408,13 @@ namespace ChinookApp.Helpers
             return spenders;
         }
 
-        // 9.                                                       
+        /// <summary>
+        /// 9. Get the most popular genre of a given customer
+        /// </summary>
+        /// <param name="customerId">Customers id</param>
+        /// <returns>Customer database unique Id, Firstname, Lastname and genre</returns>
+        /// <exception cref="SqlException">In case of could not stablish a connection to sql server or other interaction with the database</exception>
+        /// <exception cref="Exception">All other errors on this method display error message on console</exception>
         public CustomerGenre TopPopularGenre(int customerId)
         {
             CustomerGenre customerGenre = new CustomerGenre();
@@ -374,7 +456,11 @@ namespace ChinookApp.Helpers
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException exsql)
+            {
+                Console.WriteLine(exsql.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
