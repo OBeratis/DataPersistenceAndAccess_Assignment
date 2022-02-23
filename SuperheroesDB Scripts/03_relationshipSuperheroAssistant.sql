@@ -12,7 +12,6 @@
 USE [SuperheroesDb];
 GO
 
-
 ALTER TABLE [dbo].[Superhero] ADD CONSTRAINT [FK_AssistantId]
     FOREIGN KEY ([AssistantId]) REFERENCES [dbo].[Assistant] ([AssistantId]) ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO

@@ -15,6 +15,7 @@ GO
 /*******************************************************************************
    Create Tables
 ********************************************************************************/
+DROP TABLE IF EXISTS [dbo].[Superhero];
 
 CREATE TABLE [dbo].[Superhero]
 (
@@ -28,6 +29,7 @@ CREATE TABLE [dbo].[Superhero]
 );
 GO
 
+DROP TABLE IF EXISTS [dbo].[Assistant];
 CREATE TABLE [dbo].[Assistant]
 (
     [AssistantId] INT NOT NULL IDENTITY,
@@ -36,6 +38,7 @@ CREATE TABLE [dbo].[Assistant]
 );
 GO
 
+DROP TABLE IF EXISTS [dbo].[Power];
 CREATE TABLE [dbo].[Power]
 (
     [PowerId] INT NOT NULL IDENTITY,
