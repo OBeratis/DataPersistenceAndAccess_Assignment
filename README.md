@@ -18,6 +18,8 @@ Visual Studio 2019 or higher
 
 Microsoft Sql Server 2012 or higher
 
+Microsoft SQl Server Management Studio v18.10 or higher
+
 ## Install
 
 Clone the application provided under https://github.com/OBeratis/DataPersistenceAndAccess_Assignment
